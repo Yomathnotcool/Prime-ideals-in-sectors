@@ -1,0 +1,213 @@
+\documentclass[12pt,a4paper,english]{article}
+\usepackage{tikz-cd}
+\usepackage[a4paper]{geometry}
+\usepackage{ctex}
+\usepackage[utf8]{inputenc}
+\usepackage[OT2,T1]{fontenc}
+\usepackage{babel}
+\usepackage{dsfont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{stmaryrd}
+\usepackage{color}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{natbib}
+
+\geometry{top=3cm,bottom=3cm,left=2.5cm,right=2.5cm}
+\setlength\parindent{0pt}
+\renewcommand{\baselinestretch}{1.3}
+
+\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+  \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+  #1 % the function
+  \vphantom{\big|} % pretend it's a little taller at normal size
+  \right|_{#2} % this is the delimiter
+  }}
+  
+% definition of the "structure"
+\theoremstyle{plain}
+\newtheorem*{thm}{Theorem}
+\newtheorem*{lem}{Lemma}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{coro}{Corollary}
+\theoremstyle{definition}
+\newtheorem*{defi}{Definition}
+\newtheorem*{ex}{Example}
+\newtheorem*{rem}{Remark}
+\newtheorem*{cla}{Claim}
+
+\title{Prime ideals in sectors}
+\date{\today}
+\author{Milan Berger-Guesneau, Deng Zhiyuan}
+
+
+% definition of operators
+\DeclareMathOperator{\Hom}{\normalfont{Hom}}
+\DeclareMathOperator{\Spec}{\normalfont{Spec}}
+\DeclareMathOperator{\Specmax}{\normalfont{Spec}_{max}}
+\DeclareMathOperator{\Gal}{\normalfont{Gal}}
+\DeclareMathOperator{\Proj}{\normalfont{Proj}}
+\DeclareMathOperator{\hgt}{\normalfont{ht}}
+\DeclareMathOperator{\coht}{\normalfont{coht}}
+\DeclareMathOperator{\Frac}{\normalfont{Frac}}
+
+\begin{document}
+
+\maketitle
+
+The aim of this homework is to prove the following result.
+
+\begin{thm}
+Let $I$ be an interval contained in $[0,\pi/2)$. The set
+\begin{equation*}
+    S(I):=\{(z)\in\Spec(\mathbb{Z}[i])\mid\, \arg(z)\in I\}
+\end{equation*}
+has an analytic density, equal to $2\mu(I)/\pi$.
+\end{thm}
+In other words, the angles of the prime elements of $\mathbb{Z}[i]$ are uniformly distributed.
+
+\vspace{0.5cm}
+
+\subsection*{Some preliminaries}
+
+Let $\varphi$ be the characteristic function of $I$, extended to $\mathbb{R}$ by $\pi/2$-periodicity. Because this function is $2\pi$-periodic it has a Fourier expansion $\varphi=\sum_{n\in\mathbb{Z}}c_n e^{in\cdot}$, where 
+\begin{equation*}
+    c_n:=\frac{1}{2\pi}\int_0^{2\pi}\varphi(t)e^{-int}dt=\frac{2}{\pi}\int_I e^{-int}dt.
+\end{equation*}
+
+\begin{lem}
+If $n\not\equiv 0\mod 4$, then $c_n=0$.
+\end{lem}
+\begin{proof}
+Using the $\pi/2$-periodicity of $\varphi$, we have for all $x$ real
+\begin{equation*}
+    \sum_{n\in\mathbb{Z}}c_n e^{inx}=\varphi(x)=\varphi\left(x+\frac{\pi}{2}\right)=\sum_{n\in\mathbb{Z}}i^nc_n e^{inx}
+\end{equation*}
+and so $c_n=i^nc_n$. 
+\end{proof}
+
+Therefore we can write 
+\begin{equation}\label{FourierPhi}
+    \varphi=\sum_{n\in\mathbb{Z}}d_n e^{i4n\cdot}
+\end{equation}
+where $d_n:=c_{4n}$.
+\vspace{0.5cm}
+
+Let, for $n\in\mathbb{Z}$,
+\begin{align*}
+    \chi_n:&I_{\mathbb{Q}(i)}\longrightarrow\mathbb{C}\\
+    &(z)\mapsto (z/|z|)^{4n}=e^{i4n\arg(z)}
+\end{align*}
+be the Hecke character of $\mathbb{Q}(i)$ given in the course. It's a trivial character if and only if $n=0$.
+\vspace{0.5cm}
+
+Put, for all $z\in\mathbb{Z}[i]$, $\psi(z):=\varphi(\arg z)$. Because of equation \eqref{FourierPhi}, we have for all $z\in\mathbb{Z}[i]$
+\begin{equation}\label{EqPsi}
+    \psi(z)=\sum_{n\in\mathbb{Z}}d_n e^{i4n \arg(z)}=\sum_{n\in\mathbb{Z}}d_n \chi_n(z).
+\end{equation}
+
+\subsection*{The link with $L$-functions}
+
+In order to prove the theorem, we have to show the equivalent
+\begin{equation}\label{goal}
+    \sum_{(z)\in S(I)}\frac{1}{N(z)^s}\sim \frac{2\mu(I)}{\pi}\log\left(\frac{1}{s-1}\right)
+\end{equation}
+when $s$ goes to $1$ and $\Re(s)>1$ (all the following equivalents will be of this form).
+
+Using equation \eqref{EqPsi}, we obtain for $\Re(s)>1$
+\begin{equation}\label{eqM}
+    \sum_{(z)\in S(I)}\frac{1}{N(z)^s}=\sum_{(z)\in \Spec(\mathbb{Z}[i])}\frac{\psi(z)}{N(z)^s}=\sum_{n\in\mathbb{Z}}d_n M(s,\chi_n)
+\end{equation}
+where
+\begin{equation*}
+    M(s,\chi_n):=\sum_{(z)\in \Spec(\mathbb{Z}[i])}\frac{\chi_n(z)}{N(z)^s}.
+\end{equation*}
+On the other hand, we have
+\begin{align*}
+    \log L(s,\chi_n)&=\sum_{(z)\in \Spec(\mathbb{Z}[i])}\sum_{k\geqslant 1}\frac{\chi_n(z)^k}{kN(z)^{ks}}\\
+    &=M(s,\chi_n)+\sum_{(z)\in \Spec(\mathbb{Z}[i])}\sum_{k\geqslant 2}\frac{\chi_n(z)^k}{kN(z)^{ks}}.
+\end{align*}
+The second term in the right hand side is holomorphic in a neighborhood of $1$. Indeed, the estimate
+\begin{align*}
+    \sum_{(z)\in \Spec(\mathbb{Z}[i])}\sum_{k\geqslant 2}\left|\frac{\chi_n(z)^k}{kN(z)^{ks}}\right|&\leqslant\frac{1}{2}\sum_{(z)\in \Spec(\mathbb{Z}[i])}\sum_{k\geqslant 0}|N(z)^{-(k+2)s}|\\
+    &=\frac{1}{2}\sum_{(z)\in \Spec(\mathbb{Z}[i])}\frac{1}{|N(z)^s|(|N(z)^s|-1)}\\
+    &=\frac{1}{2}\sum_{(z)\in \Spec(\mathbb{Z}[i])}\frac{1}{|z|^{2\Re(s)}(|z|^{2\Re(s)}-1)}
+\end{align*}
+shows that it is a holomorphic function on $\Re(s)>1/2$. It implies
+\begin{equation}\label{fctnLM}
+    \log L(s,\chi_n)\sim M(s,\chi_n).
+\end{equation}
+
+Recall that Hecke $L$-functions associated to non-trivial characters can be extended to entire functions, and that they never vanish at $1$. Hence \eqref{eqM} and \eqref{fctnLM} give
+\begin{equation}\label{eqSum}
+    \sum_{(z)\in S(I)}\frac{1}{N(z)^s}\sim \sum_{n\neq 0}d_n \log L(1,\chi_n)+d_0\log L(s,\mathds{1})
+\end{equation}
+where $\mathds{1}=\chi_0$ is the trivial Hecke character. We assume here that the first term in the right hand side of \eqref{eqSum} converges. Because the Hecke $L$-function associated to $\mathds{1}$ has a simple pole at $1$, we can write
+\begin{equation*}
+    L(s,\mathds{1})\sim \frac{\mu}{s-1}
+\end{equation*}
+and thus
+\begin{equation}\label{eqL}
+    \log L(s,\mathds{1})\sim \log\mu+\log\left(\frac{1}{s-1}\right)\sim \log\left(\frac{1}{s-1}\right)
+\end{equation}
+From $\eqref{eqSum}$ and \eqref{eqL} it follows
+\begin{equation*}
+    \sum_{(z)\in S(I)}\frac{1}{N(z)^s}\sim d_0\log\left(\frac{1}{s-1}\right)
+\end{equation*}
+Because $d_0=c_0=2\mu(I)/\pi$, we get the equation \eqref{goal} as wanted. This concludes the proof.
+\vspace{0.5cm}
+
+\begin{rem}
+We assumed here that the first term in the right hand side of \eqref{eqSum} converges. To solve this problem, one can approximate $\varphi$ by two smooth functions $\varphi_-$ and $\varphi_+$ such that $\varphi_-\leqslant \varphi\leqslant\varphi_+$ and $\|\varphi-\varphi_\pm\|\leqslant\varepsilon$ on a period. Replacing $\varphi$ by $\varphi_\pm$ in what we did before, we get that the first term in the right hand side of \eqref{eqSum} converges. Indeed, because $\varphi_\pm$ is smooth its Fourier coefficients are rapidly decreasing. We therefore obtain the values of two quantities $\delta(I,\varphi_\pm)$ such that $\delta(I,\varphi_-)\leqslant\delta(S(I))\leqslant\delta(I,\varphi_+)$. Letting $\varepsilon$ going to zero, we get the result.
+\end{rem}
+\vspace{1cm}
+
+The theorem we just proved is a particular case of the following result.
+
+\begin{thm}
+Let $K$ be a imaginary quadratic number field of class number $1$, let $a$ be the number of roots of unity in $K$. For every interval $I$ contained in $[0,2\pi/a)$, the set
+\begin{equation*}
+    S_K(I):=\{(z)\in\Spec(\mathcal{O}_K)\mid\, \arg(z)\in I\}
+\end{equation*}
+has an analytic density, equal to $a\mu(I)/2\pi$.
+\end{thm}
+
+\begin{ex}\textcolor{white}{.}
+\begin{itemize}
+    \item[1)] For $K=\mathbb{Q}(i)$, we have $a=4$ and so we recover the preceding theorem.
+    \item[2)] For $K=\mathbb{Q}(j)$, we have $a=6$ and so the analytic density of $S_{\mathbb{Q}(j)}(I)$ is $3\mu(I)/\pi$.
+\end{itemize}
+\end{ex}
+\vspace{0.5cm}
+
+Let's see how we can adapt the preceding proof. 
+
+As before, let $\varphi$ be the characteristic function of $I$, but this time extended to $\mathbb{R}$ by $2\pi/a$-periodicity. We still have $\varphi=\sum_{n\in\mathbb{Z}}c_n e^{in\cdot}$ with
+\begin{equation*}
+    c_n=\frac{a}{2\pi}\int_I e^{-int}dt.
+\end{equation*}
+One see easily that if $n\not\equiv 0\mod a$, then $c_n=0$. Thus we get 
+\begin{equation*}
+    \varphi=\sum_{n\in\mathbb{Z}}d_n e^{ian\cdot}
+\end{equation*}
+where $d_n:=c_{an}$. If we put
+\begin{align*}
+    \chi_n:&I_{K}\longrightarrow\mathbb{C}\\
+    &(z)\mapsto (z/|z|)^{an}=e^{ian\arg(z)}
+\end{align*}
+and $\psi(z)=\varphi(\arg z)$ as before, then equation \eqref{EqPsi} is still valid in this context.
+
+The rest of the proof is pretty much the same. At the end we get
+\begin{equation*}
+    \sum_{(z)\in S(I)}\frac{1}{N(z)^s}\sim d_0\log\left(\frac{1}{s-1}\right)
+\end{equation*}
+with $d_0=a\mu(I)/2\pi$.
+
+%\newpage
+%\bibliographystyle{unsrt}
+%\bibliography{bib.bib}
+\end{document}
